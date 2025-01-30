@@ -114,6 +114,11 @@ app.get("/", (req, res) => {
     res.send("Servidor funcionando correctamente");
   });
 
+  app.get("/enviar-correo-admin", (req, res) => {
+    res.send("Usa POST para enviar solicitudes a esta ruta.");
+  });
+  
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
