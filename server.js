@@ -109,6 +109,11 @@ app.post("/enviar-correo-usuario", bodyParser.urlencoded({ extended: true }), (r
   });
 });
 
+// Ruta raíz para evitar "Cannot GET /"
+app.get("/", (req, res) => {
+    res.send("Servidor funcionando correctamente");
+  });
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
