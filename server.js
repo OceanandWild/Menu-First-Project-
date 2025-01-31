@@ -108,16 +108,15 @@ app.post("/enviar-correo-usuario", bodyParser.urlencoded({ extended: true }), (r
       }
     });
   });
-  
-  // 🔐 Ruta para confirmar el registro y asignar un número de cuenta
-app.get("/confirmar-registro", (req, res) => {
+
+  app.get("/confirmar-registro", (req, res) => {
     const { correo } = req.query;
+    console.log("Solicitud recibida para confirmar:", correo, solicitudes);
   
     if (!correo || !solicitudes[correo]) {
-      return res.status(404).send("Solicitud no encontrada o ya procesada.");
+        return res.status(404).send("Solicitud no encontrada o ya procesada.");
     }
-  
-    // Formulario para ingresar el número de cuenta
+
     res.send(`
       <h2>Confirmar Registro</h2>
       <form action="/enviar-correo-usuario" method="POST">
@@ -127,7 +126,8 @@ app.get("/confirmar-registro", (req, res) => {
         <button type="submit">Confirmar</button>
       </form>
     `);
-  });
+});
+
   
 
 // Ruta raíz para evitar "Cannot GET /"
