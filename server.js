@@ -59,55 +59,76 @@ app.post("/enviar-correo-admin", (req, res) => {
   });
 });
 
-// 🔐 Ruta para confirmar el registro y asignar un número de cuenta
-app.get("/confirmar-registro", (req, res) => {
-  const { correo } = req.query;
-
-  if (!correo || !solicitudes[correo]) {
-    return res.status(404).send("Solicitud no encontrada o ya procesada.");
-  }
-
-  // Formulario para ingresar el número de cuenta
-  res.send(`
-    <h2>Confirmar Registro</h2>
-    <form action="/enviar-correo-usuario" method="POST">
-      <input type="hidden" name="correoElectronico" value="${correo}">
-      <label>Número de Cuenta:</label>
-      <input type="text" name="numeroCuenta" required>
-      <button type="submit">Confirmar</button>
-    </form>
-  `);
-});
 
 // 📩 Enviar correo al usuario con su número de cuenta
 app.post("/enviar-correo-usuario", bodyParser.urlencoded({ extended: true }), (req, res) => {
-  const { correoElectronico, numeroCuenta } = req.body;
-
-  if (!solicitudes[correoElectronico]) {
-    return res.status(404).send("Solicitud no encontrada o ya procesada.");
-  }
-
-  const mailOptions = {
-    from: "hachiyt001@gmail.com",
-    to: correoElectronico,
-    subject: "Registro exitoso en Ocean and Wild Menu",
-    text: `Tu número de cuenta para iniciar sesión es: ${numeroCuenta}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error enviando correo:", error);
-      res.status(500).send("Error enviando correo");
-    } else {
-      console.log("Correo enviado al usuario:", info.response);
-
-      // Eliminamos la solicitud ya procesada
-      delete solicitudes[correoElectronico];
-
-      res.send("Registro confirmado y correo enviado al usuario.");
+    const { correoElectronico, numeroCuenta } = req.body;
+  
+    if (!solicitudes[correoElectronico]) {
+      return res.status(404).send("Solicitud no encontrada o ya procesada.");
     }
+  
+    const { nombreReceptor } = solicitudes[correoElectronico]; // Obtener el nombre del usuario
+  
+    const mailOptions = {
+      from: "hachiyt001@gmail.com",
+      to: correoElectronico,
+      subject: "🎉 ¡Bienvenido a Ocean and Wild Menu!",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px; max-width: 500px;">
+          <h2 style="color: #2E86C1;">🌊 ¡Hola, ${nombreReceptor}! 🌿</h2>
+          <p>Nos alegra darte la bienvenida a <strong>Ocean and Wild Menu</strong>. 🎉</p>
+          <p>Tu número de cuenta ha sido generado exitosamente. Con él, podrás acceder a todas las funciones de nuestra plataforma.</p>
+          <p style="font-size: 18px;"><strong>🔑 Tu número de cuenta:</strong> <span style="color: #27AE60;">${numeroCuenta}</span></p>
+          <p>Puedes iniciar sesión haciendo clic en el siguiente botón:</p>
+          <p>
+            <a href="https://tu-sitio-web.com/login" 
+               style="display: inline-block; padding: 10px 20px; background: #27AE60; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+               Iniciar Sesión
+            </a>
+          </p>
+          <p>Si tienes alguna duda, no dudes en contactarnos. ¡Esperamos que disfrutes de la experiencia! 🌎💚</p>
+          <hr>
+          <p style="font-size: 12px; color: #555;">Este es un correo automático, por favor no respondas a este mensaje.</p>
+        </div>
+      `,
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error enviando correo:", error);
+        res.status(500).send("Error enviando correo");
+      } else {
+        console.log("Correo enviado al usuario:", info.response);
+  
+        // Eliminamos la solicitud ya procesada
+        delete solicitudes[correoElectronico];
+  
+        res.send("Registro confirmado y correo enviado al usuario.");
+      }
+    });
   });
-});
+  
+  // 🔐 Ruta para confirmar el registro y asignar un número de cuenta
+app.get("/confirmar-registro", (req, res) => {
+    const { correo } = req.query;
+  
+    if (!correo || !solicitudes[correo]) {
+      return res.status(404).send("Solicitud no encontrada o ya procesada.");
+    }
+  
+    // Formulario para ingresar el número de cuenta
+    res.send(`
+      <h2>Confirmar Registro</h2>
+      <form action="/enviar-correo-usuario" method="POST">
+        <input type="hidden" name="correoElectronico" value="${correo}">
+        <label>Número de Cuenta:</label>
+        <input type="text" name="numeroCuenta" required>
+        <button type="submit">Confirmar</button>
+      </form>
+    `);
+  });
+  
 
 // Ruta raíz para evitar "Cannot GET /"
 app.get("/", (req, res) => {
