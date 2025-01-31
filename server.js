@@ -30,7 +30,8 @@ app.post("/enviar-correo-admin", (req, res) => {
   solicitudes[correoElectronico] = { nombreReceptor, correoElectronico };
 
   // Construimos la URL correctamente
-  const confirmUrl = `http://localhost:${PORT}/confirmar-registro?correo=${encodeURIComponent(correoElectronico)}`;
+  const confirmUrl = `https://menu-first-project.onrender.com/confirmar-registro?correo=${encodeURIComponent(correoElectronico)}`;
+
 
   const mailOptions = {
     from: "hachiyt001@gmail.com",
