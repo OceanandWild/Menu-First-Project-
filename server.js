@@ -80,13 +80,7 @@ app.post("/enviar-correo-usuario", bodyParser.urlencoded({ extended: true }), (r
           <p>Nos alegra darte la bienvenida a <strong>Ocean and Wild Menu</strong>. 🎉</p>
           <p>Tu número de cuenta ha sido generado exitosamente. Con él, podrás acceder a todas las funciones de nuestra plataforma.</p>
           <p style="font-size: 18px;"><strong>🔑 Tu número de cuenta:</strong> <span style="color: #27AE60;">${numeroCuenta}</span></p>
-          <p>Puedes iniciar sesión haciendo clic en el siguiente botón:</p>
-          <p>
-            <a href="https://tu-sitio-web.com/login" 
-               style="display: inline-block; padding: 10px 20px; background: #27AE60; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
-               Iniciar Sesión
-            </a>
-          </p>
+          <p>Puedes iniciar sesión en la aplicación utilizando tu número de cuenta.</p>
           <p>Si tienes alguna duda, no dudes en contactarnos. ¡Esperamos que disfrutes de la experiencia! 🌎💚</p>
           <hr>
           <p style="font-size: 12px; color: #555;">Este es un correo automático, por favor no respondas a este mensaje.</p>
